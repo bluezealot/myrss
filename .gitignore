@@ -1,0 +1,27 @@
+# Maven build directory
+target/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Data files
+data/articles.json
+
+# Dependency reduced POM
+dependency-reduced-pom.xml
