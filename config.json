@@ -1,0 +1,7 @@
+{
+  "opmlPath": "feeds.opml",
+  "maxArticles": 10,
+  "keywords": ["AI", "robot", "android", "LLM", "OpenAI", "artificial intelligence", "machine learning", "neural network", "deep learning", "chatbot", "GPT"],
+  "aiEnabled": true,
+  "dataFile": "data/articles.json"
+}

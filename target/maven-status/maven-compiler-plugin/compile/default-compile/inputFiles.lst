@@ -1,0 +1,12 @@
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/ArticleRepository.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/FeedFetcher.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/DigestGenerator.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/OpmlLoader.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/RankingEngine.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/TopicClusterer.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/UpdateDetector.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/Config.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/TelegramPublisher.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/Article.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/AiSummarizer.java
+/Volumes/Seagate/work/git/github/myrss/src/main/java/com/rssmonitor/Main.java
