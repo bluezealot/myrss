@@ -37,6 +37,11 @@ public class DigestGenerator {
                 
                 digest.append(emoji).append(" ").append(escapeHtml(article.getTitle())).append("\n");
                 
+                // Show Chinese title if available
+                if (article.getChineseTitle() != null && !article.getChineseTitle().isEmpty()) {
+                    digest.append("   中文标题: ").append(escapeHtml(article.getChineseTitle())).append("\n");
+                }
+                
                 if (article.getSource() != null && !article.getSource().isEmpty()) {
                     digest.append("   Source: ").append(escapeHtml(article.getSource())).append("\n");
                 }

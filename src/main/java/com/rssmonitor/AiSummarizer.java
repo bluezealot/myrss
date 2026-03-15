@@ -46,7 +46,7 @@ public class AiSummarizer {
         }
         
         if (articles.isEmpty()) {
-            return "No articles to summarize.";
+            return "No articles to summarize.\n\n没有文章可以总结。";
         }
         
         try {
@@ -66,13 +66,17 @@ public class AiSummarizer {
         prompt.append("Include key themes and 3-5 bullet highlights.\n\n");
         prompt.append("IMPORTANT: Provide the summary in both English and Chinese (Simplified).\n");
         prompt.append("First write the English summary, then the Chinese summary.\n\n");
+        prompt.append("Additionally, for each article, provide a Chinese translation of the title.\n");
+        prompt.append("Format the article translations as follows:\n");
+        prompt.append("ARTICLE_1_TITLE: [English title]\n");
+        prompt.append("ARTICLE_1_CHINESE_TITLE: [Chinese translation]\n\n");
         prompt.append("Articles:\n\n");
         
         int count = 0;
         for (Article article : articles) {
             if (count >= 10) break;
-            prompt.append("Title: " + article.getTitle() + "\n");
-            prompt.append("Description: " + article.getDescription() + "\n\n");
+            prompt.append("ARTICLE_").append(count + 1).append("_TITLE: ").append(article.getTitle()).append("\n");
+            prompt.append("ARTICLE_").append(count + 1).append("_DESCRIPTION: ").append(article.getDescription()).append("\n\n");
             count++;
         }
         
@@ -81,7 +85,7 @@ public class AiSummarizer {
     
     private String callOpenAiApi(String prompt) throws IOException {
         String requestBody = String.format(
-            "{\"model\": \"%s\", \"messages\": [{\"role\": \"user\", \"content\": %s}], \"max_tokens\": 500, \"temperature\": 0.7}",
+            "{\"model\": \"%s\", \"messages\": [{\"role\": \"user\", \"content\": %s}], \"max_tokens\": 1000, \"temperature\": 0.7}",
             model,
             objectMapper.writeValueAsString(prompt)
         );
@@ -101,13 +105,15 @@ public class AiSummarizer {
             String responseBody = response.body().string();
             JsonNode jsonNode = objectMapper.readTree(responseBody);
             
-            return jsonNode
+            String content = jsonNode
                     .path("choices")
                     .get(0)
                     .path("message")
                     .path("content")
                     .asText()
                     .trim();
+            
+            return content;
         }
     }
     
@@ -125,12 +131,12 @@ public class AiSummarizer {
         int count = 0;
         for (Article article : articles) {
             if (count >= 5) break;
-            summary.append("• ").append(article.getTitle()).append("\n");
+            summary.append("• " + article.getTitle() + "\n");
             count++;
         }
         
         if (articles.size() > 5) {
-            summary.append("\n...and ").append(articles.size() - 5).append(" more articles.");
+            summary.append("\n...and " + (articles.size() - 5) + " more articles.");
         }
         
         // Chinese summary
@@ -140,12 +146,12 @@ public class AiSummarizer {
         count = 0;
         for (Article article : articles) {
             if (count >= 5) break;
-            summary.append("• ").append(article.getTitle()).append("\n");
+            summary.append("• " + article.getTitle() + "\n");
             count++;
         }
         
         if (articles.size() > 5) {
-            summary.append("\n...以及 ").append(articles.size() - 5).append(" 篇更多文章。");
+            summary.append("\n...以及 " + (articles.size() - 5) + " 篇更多文章。");
         }
         
         return summary.toString();

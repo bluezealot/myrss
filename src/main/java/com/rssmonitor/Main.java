@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -97,6 +99,9 @@ public class Main {
         logger.info("=== Step 7: Generating AI summary ===");
         String summary = aiSummarizer.summarize(rankedArticles);
         
+        // Parse Chinese titles from summary and set to articles
+        parseChineseTitles(summary, rankedArticles);
+        
         logger.info("=== Step 8: Building digest ===");
         String digest = digestGenerator.generate(rankedArticles, summary);
         
@@ -121,5 +126,35 @@ public class Main {
         articleRepository.saveArticles(updatedArticles);
         
         logger.info("Pipeline completed successfully!");
+    }
+    
+    /**
+     * Parse Chinese titles from the AI-generated summary and set them to the corresponding articles.
+     */
+    private void parseChineseTitles(String summary, List<Article> articles) {
+        if (articles.isEmpty()) return;
+        
+        // Pattern to match ARTICLE_X_TITLE and ARTICLE_X_CHINESE_TITLE pairs
+        Pattern pattern = Pattern.compile("ARTICLE_(\\d+)_TITLE: (.*?)\\s*ARTICLE_\\1_CHINESE_TITLE: (.*?)(?=\\s*(ARTICLE_|$))", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(summary);
+        
+        while (matcher.find()) {
+            try {
+                int articleIndex = Integer.parseInt(matcher.group(1)) - 1; // Convert to 0-based index
+                String englishTitle = matcher.group(2).trim();
+                String chineseTitle = matcher.group(3).trim();
+                
+                if (articleIndex >= 0 && articleIndex < articles.size()) {
+                    Article article = articles.get(articleIndex);
+                    // Only set if the English title matches
+                    if (article.getTitle().equals(englishTitle)) {
+                        article.setChineseTitle(chineseTitle);
+                        logger.info("Set Chinese title for article: {} -> {}", englishTitle, chineseTitle);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                logger.warn("Failed to parse article index: {}", e.getMessage());
+            }
+        }
     }
 }

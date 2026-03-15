@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class Article {
     private String title;
+    private String chineseTitle;
     private String link;
     
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -20,6 +21,7 @@ public class Article {
 
     public Article(String title, String link, Instant publishTime, String source, String description) {
         this.title = title;
+        this.chineseTitle = null;
         this.link = link;
         this.publishTime = publishTime;
         this.source = source;
@@ -33,6 +35,14 @@ public class Article {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getChineseTitle() {
+        return chineseTitle;
+    }
+
+    public void setChineseTitle(String chineseTitle) {
+        this.chineseTitle = chineseTitle;
     }
 
     public String getLink() {
@@ -92,6 +102,7 @@ public class Article {
     public String toString() {
         return "Article{" +
                 "title='" + title + '\'' +
+                ", chineseTitle='" + chineseTitle + '\'' +
                 ", link='" + link + '\'' +
                 ", publishTime=" + publishTime +
                 ", source='" + source + '\'' +
