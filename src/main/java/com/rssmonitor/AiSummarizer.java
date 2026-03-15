@@ -64,13 +64,15 @@ public class AiSummarizer {
         StringBuilder prompt = new StringBuilder();
         prompt.append("Summarize the following news articles into a short technology digest. ");
         prompt.append("Include key themes and 3-5 bullet highlights.\n\n");
+        prompt.append("IMPORTANT: Provide the summary in both English and Chinese (Simplified).\n");
+        prompt.append("First write the English summary, then the Chinese summary.\n\n");
         prompt.append("Articles:\n\n");
         
         int count = 0;
         for (Article article : articles) {
             if (count >= 10) break;
-            prompt.append("Title: ").append(article.getTitle()).append("\n");
-            prompt.append("Description: ").append(article.getDescription()).append("\n\n");
+            prompt.append("Title: " + article.getTitle() + "\n");
+            prompt.append("Description: " + article.getDescription() + "\n\n");
             count++;
         }
         
@@ -111,10 +113,12 @@ public class AiSummarizer {
     
     private String generateFallbackSummary(List<Article> articles) {
         if (articles.isEmpty()) {
-            return "No new articles to report.";
+            return "No new articles to report.\n\n没有新文章要报告。";
         }
         
         StringBuilder summary = new StringBuilder();
+        
+        // English summary
         summary.append("📰 Latest News Summary\n\n");
         summary.append("Key articles from this update:\n\n");
         
@@ -127,6 +131,21 @@ public class AiSummarizer {
         
         if (articles.size() > 5) {
             summary.append("\n...and ").append(articles.size() - 5).append(" more articles.");
+        }
+        
+        // Chinese summary
+        summary.append("\n\n📰 最新新闻摘要\n\n");
+        summary.append("本次更新的重点文章：\n\n");
+        
+        count = 0;
+        for (Article article : articles) {
+            if (count >= 5) break;
+            summary.append("• ").append(article.getTitle()).append("\n");
+            count++;
+        }
+        
+        if (articles.size() > 5) {
+            summary.append("\n...以及 ").append(articles.size() - 5).append(" 篇更多文章。");
         }
         
         return summary.toString();

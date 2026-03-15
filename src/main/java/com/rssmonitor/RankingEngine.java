@@ -13,7 +13,7 @@ public class RankingEngine {
     private final List<String> keywords;
     private final int maxArticles;
     
-    private static final double RECENCY_WEIGHT = 1.0;
+    private static final double RECENCY_WEIGHT = 2.0; // Increased weight for recency
     private static final double KEYWORD_WEIGHT = 1.0;
     private static final double CLUSTER_WEIGHT = 1.0;
     
